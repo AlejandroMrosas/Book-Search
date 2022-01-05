@@ -5,7 +5,7 @@ type User {
     _id: ID
     username: String
     email: String
-    bookCount: Sting
+    bookCount: String
     savedBooks: [Book]
 }
 type Book {

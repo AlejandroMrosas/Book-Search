@@ -10,13 +10,15 @@ const routes = require('./routes');
 const PORT = process.env.PORT || 3001;
 const app = express();
 
-  const server = new ApolloServer({
+const server = new ApolloServer({
     typeDefs,
     resolvers,
     context: authMiddleware,
-  });
+});
 
-server.applyMiddleware({app});
+server.start().then(() => {
+  server.applyMiddleware({app});
+});
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
@@ -29,6 +31,8 @@ if (process.env.NODE_ENV === 'production') {
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/build/index.html'));
 });
+
+app.use(routes);
 
 db.once('open', () => {
   app.listen(PORT, () => {
